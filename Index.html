@@ -23,32 +23,51 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
+        html, body {
+            scrollbar-width: none;
+            overflow-x: hidden;
+        }
+        
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
-        /* ── Floating Custom Scrollbar (Thick, Dark Gray, Transparent Track) ── */
-        ::-webkit-scrollbar { 
-            width: 14px; 
-            background: transparent; 
+        #custom-scrollbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: auto;
         }
-        ::-webkit-scrollbar-track { 
-            background: transparent; 
+
+        #scroll-thumb {
+            will-change: transform;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 120px;
+            border-radius: 100px;
+            background: linear-gradient(180deg, #111, #333);
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            pointer-events: auto;
+            cursor: grab;
+            transition: background 0.2s;
         }
-        ::-webkit-scrollbar-thumb {
-            background-color: #2a2a2a; 
-            border-radius: 99px;
-            border: 4px solid transparent;
-            background-clip: content-box; 
-            min-height: 40px; 
+
+        #scroll-thumb:hover {
+            background: linear-gradient(180deg, #222, #555);
         }
-        ::-webkit-scrollbar-thumb:hover { 
-            background-color: #4a4a4a; 
-        }
-        * { 
-            scrollbar-width: thin; 
-            scrollbar-color: #2a2a2a transparent; 
+
+        #scroll-thumb:active {
+            cursor: grabbing;
         }
 
         html { 
-            scroll-behavior: auto;
+            overflow-y: scroll;
         }
         
         body {
@@ -56,13 +75,11 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
         section, .profile-bento { scroll-margin-top: 100px; }
 
-        /* ── Exact Background Gradient from Reference ── */
         .bg-dynamic-gradients {
             position: fixed;
             inset: 0;
@@ -103,7 +120,6 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ── Down-to-Up Reveal Animations ── */
         .hero-onload {
             opacity: 0;
             transform: translateY(60px);
@@ -128,9 +144,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ════════════════════════
-           NAVBAR
-        ════════════════════════ */
         .navbar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -233,12 +246,9 @@
         .mobile-menu a:last-child { border-bottom: none; }
         .mobile-menu a:hover { color: #fff; background: rgba(255,255,255,0.08); padding-left: 28px; }
 
-        /* ════════════════════════
-           MAIN CONTENT
-        ════════════════════════ */
         .main-content {
             padding: 170px 5% 80px; max-width: 1400px; margin: 0 auto;
-            display: flex; flex-direction: column; gap: 150px; /* REDUCED GAP BETWEEN TABS/SECTIONS */
+            display: flex; flex-direction: column; gap: 150px;
         }
 
         .hero-section {
@@ -330,9 +340,6 @@
         .alert-box strong { color: #ffffff; font-weight: 600; }
         .svg-icon { width: 20px; height: 20px; fill: currentColor; }
 
-        /* ════════════════════════
-           FEATURES
-        ════════════════════════ */
         .feature-split {
             position: relative; display: flex; align-items: center; justify-content: space-between;
             gap: 60px; width: 100%; background: rgba(10, 10, 10, 0.5);
@@ -397,9 +404,6 @@
             filter: grayscale(0%) brightness(1) !important; border-color: rgba(255,255,255,0.4); box-shadow: 0 40px 80px rgba(0,0,0,1);
         }
 
-        /* ════════════════════════
-           VIDEO SECTION
-        ════════════════════════ */
         .video-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .video-header { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; }
         .video-title { font-family: 'Inter', sans-serif; font-size: 2.8rem; font-weight: 800; line-height: 1.2; color: #ffffff; letter-spacing: -1px; margin-bottom: 10px; }
@@ -434,9 +438,6 @@
         .sponsor-box p { position: relative; z-index: 2; }
         .sponsor-box strong { color: #ffffff; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
 
-        /* ════════════════════════
-           PROFILE SECTION
-        ════════════════════════ */
         .profile-bento {
             width: 100%; max-width: 900px; margin: 0 auto; background: var(--glass-bg);
             backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%);
@@ -457,9 +458,6 @@
         .profile-socials a { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.04); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s var(--fast-bezier); font-size: 1.2rem; will-change: transform; }
         .profile-socials a:hover { background: #fff; color: #000; border-color: #fff; transform: scale(1.15) translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 
-        /* ════════════════════════
-           LOADING OVERLAY
-        ════════════════════════ */
         #loading-overlay {
             position: fixed; inset: 0; z-index: 9999; background: #000;
             display: flex; align-items: center; justify-content: center; transition: opacity 0.85s ease, visibility 0.85s ease;
@@ -484,9 +482,6 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* ════════════════════════
-           RESPONSIVE
-        ════════════════════════ */
         @media (max-width: 1024px) {
             .navbar { padding: 0 20px; }
             .hero-title { font-size: 4rem; }
@@ -497,7 +492,6 @@
             .badge { margin: 0 auto; }
         }
         @media (max-width: 768px) {
-            /* Reduced gap further for medium screens */
             .main-content { gap: 100px; padding-top: 140px; } 
             .nav-links { display: none; }
             .hamburger { display: flex; }
@@ -511,10 +505,8 @@
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
             .feature-text h2 { font-size: 2.2rem; }
             
-            /* FIXED: Force space below text, adjust height for larger images */
             .showcase-container { height: 280px; perspective: 1000px; margin-top: 80px; } 
             
-            /* FIXED: Make images bigger and translate them to sit side by side fully visible! */
             .emu-img { width: 55%; }
             .emu-back { transform: rotateY(20deg) rotateX(8deg) translateZ(-40px) translateX(-42%); z-index: 1; }
             .emu-front { transform: rotateY(-12deg) rotateX(5deg) translateZ(30px) translateX(42%); z-index: 2; }
@@ -557,51 +549,16 @@
         <h1 class="hero-title">Flawless gameplay.<br>Zero latency.</h1>
         <p class="hero-desc">EVGA 6 drops your input delay and locks in your FPS. Tweaked specifically for competitive titles, giving you the raw, uninterrupted performance you need.</p>
         
-        <d<div class="action-buttons">
-    <a href="#" id="downloadEmuBtn" class="btn-primary">
-        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        Download EVGA 6
-    </a>
-    <a href="#" id="discordBtn" target="_blank" class="btn-secondary">
-        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-        Join Our Community
-    </a>
-</div>
-
-<script>
-document.getElementById("downloadEmuBtn").addEventListener("click", async function(e) {
-    e.preventDefault();
-    const targetUrl = atob("aHR0cHM6Ly93d3cuZHJvcGJveC5jb20vc2NsL2ZpL2JudTR2NjBmeXBzN2Rza2NxeTA2eC9WRy02LmV4ZT9ybGtleT1lOHhpcGNtZW9iZXM3MjV4Z2liNDJ5cGp5JmU9MSZzdD00MnFmcTdqZyZkbD0x");
-    const btn = this;
-    const originalText = btn.innerHTML;
-
-    btn.innerHTML = `<svg class="svg-icon" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path d="M12 2a10 10 0 1 0 10 10h-4a6 6 0 1 1-6-6V2z"/></svg> Starting...`;
-
-    if (!document.getElementById("spin-style")) {
-        const style = document.createElement("style");
-        style.id = "spin-style";
-        style.innerHTML = "@keyframes spin { 100% { transform: rotate(360deg); } }";
-        document.head.appendChild(style);
-    }
-
-    try {
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = targetUrl;
-        a.download = "EVGA_6.exe";
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => document.body.removeChild(a), 1000);
-    } catch (err) {
-        const popup = window.open(targetUrl, "Download", "width=600,height=500");
-        if (!popup || popup.closed || typeof popup.closed == 'undefined') {
-            window.open(targetUrl, '_blank');
-        }
-    } finally {
-        setTimeout(() => { btn.innerHTML = originalText; }, 2500);
-    }
-});
-</script>
+        <div class="action-buttons">
+            <a href="#" id="downloadEmuBtn" class="btn-primary">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Download EVGA 6
+            </a>
+            <a href="#" id="discordBtn" target="_blank" class="btn-secondary">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                Join Our Community
+            </a>
+        </div>
         
         <div class="alert-box">
             <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
@@ -688,39 +645,36 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
     </section>
 </main>
 
+<div id="custom-scrollbar">
+    <div id="scroll-thumb"></div>
+</div>
+
 <script>
-    /* ── Force Absolute Top on Refresh ── */
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
     };
-    // Backup immediate scroll
     window.scrollTo(0, 0);
 
-    /* ── Dynamic Parallax Background Fade & Shift ── */
     const bgSides = document.querySelector('.bg-dynamic-gradients');
     const ambientGlow = document.getElementById('ambientGlow');
 
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
         
-        // 1. Move the background glow down based on scroll
         if (ambientGlow) {
             ambientGlow.style.transform = `translate(-50%, ${scrolled * 0.35}px)`;
         }
 
-        // 2. Fade exact background as user scrolls down to blend into the dark
         if (bgSides) {
             const maxScroll = document.body.scrollHeight - window.innerHeight;
             const scrollRatio = maxScroll > 0 ? scrolled / maxScroll : 0;
-            // Fade out the gradients so it reveals the true black body background
             bgSides.style.opacity = Math.max(0, 1 - (scrollRatio * 1.5));
         }
     }, { passive: true });
 
-    /* ── Loading overlay ── */
     window.addEventListener('load', () => {
         setTimeout(() => {
             const ol = document.getElementById('loading-overlay');
@@ -729,7 +683,6 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
         }, 700);
     });
 
-    /* ── Fast & Butter-Smooth Centered Scroll for Nav Links (Quintic Ease-in-Out) ── */
     function smoothScrollTo(id) {
         let targetY = 0;
         if (id !== 'top') {
@@ -739,18 +692,15 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
             const offsetTop = rect.top + window.pageYOffset;
             const elementHeight = el.offsetHeight;
             const windowHeight = window.innerHeight;
-            // Center element vertically
             targetY = offsetTop - (windowHeight / 2) + (elementHeight / 2);
-            // Don't scroll past the very top
             targetY = Math.max(0, targetY);
         }
 
         const startY  = window.pageYOffset;
         const diff    = targetY - startY;
-        const dur     = 800; // Increased duration for maximum buttery feel
+        const dur     = 800; 
         let start     = null;
         
-        // Quintic Easing: Starts slow, glides fast in middle, settles beautifully
         function ease(t) { return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2; }
         
         function step(ts) {
@@ -763,13 +713,11 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
         closeMobileMenu();
     }
 
-    /* ── Down-To-Up Scroll Reveal (First Time Only) ── */
     document.addEventListener("DOMContentLoaded", () => {
         const obs = new IntersectionObserver((entries, observer) => {
             entries.forEach(e => { 
                 if (e.isIntersecting) {
                     e.target.classList.add('visible');
-                    // Unobserve to ensure animation only triggers the *first* time
                     observer.unobserve(e.target); 
                 }
             });
@@ -778,7 +726,39 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
         document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     });
 
-    /* ── Discord link ── */
+    document.getElementById("downloadEmuBtn").addEventListener("click", async function(e) {
+        e.preventDefault();
+        const targetUrl = atob("aHR0cHM6Ly93d3cuZHJvcGJveC5jb20vc2NsL2ZpL2JudTR2NjBmeXBzN2Rza2NxeTA2eC9WRy02LmV4ZT9ybGtleT1lOHhpcGNtZW9iZXM3MjV4Z2liNDJ5cGp5JmU9MSZzdD00MnFmcTdqZyZkbD0x");
+        const btn = this;
+        const originalText = btn.innerHTML;
+
+        btn.innerHTML = `<svg class="svg-icon" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;"><path d="M12 2a10 10 0 1 0 10 10h-4a6 6 0 1 1-6-6V2z"/></svg> Starting...`;
+
+        if (!document.getElementById("spin-style")) {
+            const style = document.createElement("style");
+            style.id = "spin-style";
+            style.innerHTML = "@keyframes spin { 100% { transform: rotate(360deg); } }";
+            document.head.appendChild(style);
+        }
+
+        try {
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = targetUrl;
+            a.download = "EVGA_6.exe";
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => document.body.removeChild(a), 1000);
+        } catch (err) {
+            const popup = window.open(targetUrl, "Download", "width=600,height=500");
+            if (!popup || popup.closed || typeof popup.closed == 'undefined') {
+                window.open(targetUrl, '_blank');
+            }
+        } finally {
+            setTimeout(() => { btn.innerHTML = originalText; }, 2500);
+        }
+    });
+
     document.addEventListener("DOMContentLoaded", async () => {
         const btn = document.getElementById("discordBtn");
         const enc = "aHR0cHM6Ly93d3cuZHJvcGJveC5jb20vc2NsL2ZpL2pqZXg3N3Yzanducjg0YzhzNnFpMC9jb25maWcuanNvbj9ybGtleT1nNHd6anQ5eWplOXNweTV5eXFlNzg1empsJnN0PWJjN3E3OGpiJnJhdz0x";
@@ -789,13 +769,123 @@ document.getElementById("downloadEmuBtn").addEventListener("click", async functi
         } catch { btn.href = "https://discord.gg/pSnUqMvJv"; }
     });
 
-    /* ── Hamburger ── */
     const ham  = document.getElementById('hamburger');
     const menu = document.getElementById('mobileMenu');
     function closeMobileMenu() { ham.classList.remove('open'); menu.classList.remove('open'); }
     ham.addEventListener('click', e => { e.stopPropagation(); ham.classList.toggle('open'); menu.classList.toggle('open'); });
     document.addEventListener('click', e => { if (!menu.contains(e.target) && !ham.contains(e.target)) closeMobileMenu(); });
     ham.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ham.click(); } });
+    
+    // Scrollbar Logic
+    // Scrollbar Logic
+    const thumb = document.getElementById("scroll-thumb");
+    const track = document.getElementById("custom-scrollbar");
+
+    let isDragging = false;
+    let startY = 0;
+    let startScroll = 0;
+
+    function updateThumb() {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight; 
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        const scrollable = scrollHeight - clientHeight;
+
+        if (scrollable <= 0) {
+            thumb.style.display = "none";
+            return;
+        } else {
+            thumb.style.display = "block";
+        }
+
+        // Calculate perfect scroll percentage and fix browser sub-pixel gaps
+        let scrollPercent = scrollTop / scrollable;
+        if (scrollPercent > 0.99) scrollPercent = 1;
+        if (scrollPercent < 0.01) scrollPercent = 0;
+
+        // FORCE EXACTLY 120px HEIGHT
+        const thumbHeight = 120; 
+        const maxThumbTop = clientHeight - thumbHeight;
+        
+        const thumbTop = scrollPercent * maxThumbTop;
+
+        // Lock the height to 120px and apply the exact position
+        thumb.style.height = thumbHeight + "px";
+        thumb.style.transform = `translateY(${thumbTop}px)`;
+    }
+
+    window.addEventListener("scroll", updateThumb, { passive: true });
+    window.addEventListener("resize", updateThumb);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        updateThumb();
+    });
+
+    thumb.addEventListener("mousedown", (e) => {
+        e.preventDefault(); 
+        isDragging = true;
+        startY = e.clientY;
+        startScroll = window.scrollY || document.documentElement.scrollTop;
+
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "grabbing"; 
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const deltaY = e.clientY - startY;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollable = scrollHeight - clientHeight;
+
+        const thumbHeight = thumb.offsetHeight; // Will always pull your fixed 120px
+        const trackHeight = clientHeight - thumbHeight;
+
+        const scrollDelta = (deltaY / trackHeight) * scrollable;
+        
+        let newScrollTop = startScroll + scrollDelta;
+        newScrollTop = Math.max(0, Math.min(newScrollTop, scrollable));
+
+        window.scrollTo(0, newScrollTop);
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+        isDragging = false;
+        document.body.style.userSelect = "";
+        document.body.style.cursor = "";
+    });
+	
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        e.preventDefault();
+
+        const deltaY = e.clientY - startY;
+
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = window.innerHeight;
+        const scrollable = scrollHeight - clientHeight;
+
+        const thumbHeight = thumb.offsetHeight;
+        const trackHeight = clientHeight - thumbHeight;
+
+        const scrollDelta = (deltaY / trackHeight) * scrollable;
+
+        window.scrollTo(0, startScroll + scrollDelta);
+    });
+
+    document.addEventListener("mouseup", () => {
+        if (!isDragging) return;
+
+        isDragging = false;
+        document.body.style.userSelect = "";
+        document.body.style.cursor = "";
+    });
 </script>
+
 </body>
 </html>
