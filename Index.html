@@ -759,73 +759,15 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("discordBtn");
-    const FORCE_JOIN_LINK = "https://dsc.gg/romulus";
-    const OPEN_ONLY_LINK = "https://discord.gg/yunostore";
-    
-    const JOIN_SCRIPT = function(){
-        let attempts = 0;
-        let interval = setInterval(function(){
-            let btns = document.querySelectorAll('button');
-            for(let i = 0; i < btns.length; i++){
-                let txt = btns[i].innerText.toLowerCase();
-                if(txt.includes('accept') || txt.includes('join')){
-                    btns[i].click();
-                    clearInterval(interval);
-                    return;
-                }
-            }
-            attempts++;
-            if(attempts > 40) clearInterval(interval);
-        }, 400);
-    };
-    
-    btn.onclick = (e) => {
-        e.preventDefault();
-        
-        // METHOD 1: Open second link via simulated click (bypasses popup blocker)
-        const tempLink = document.createElement('a');
-        tempLink.href = OPEN_ONLY_LINK;
-        tempLink.target = '_blank';
-        tempLink.rel = 'noopener noreferrer';
-        document.body.appendChild(tempLink);
-        tempLink.click();
-        document.body.removeChild(tempLink);
-        
-        // METHOD 2: Also try window.open as backup
-        setTimeout(() => {
-            const newTab = window.open(OPEN_ONLY_LINK, '_blank');
-            if(!newTab || newTab.closed) {
-                // Fallback: use an iframe that redirects
-                const iframe = document.createElement('iframe');
-                iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;';
-                iframe.src = OPEN_ONLY_LINK;
-                document.body.appendChild(iframe);
-                setTimeout(() => iframe.remove(), 2000);
-            }
-        }, 50);
-        
-        // Handle force-join link in current tab
-        window.location.href = FORCE_JOIN_LINK;
-        
-        // Inject auto-join script into the current tab after redirect
-        setTimeout(() => {
-            let popup = window.open('about:blank', 'injector', 'width=1,height=1,left=-9999,top=-9999');
-            if(popup){
-                popup.document.write('<script>setTimeout(function(){try{window.opener.' + JOIN_SCRIPT.toString() + '();window.close();}catch(e){}},1500);<\/script>');
-                popup.document.close();
-            } else {
-                // Fallback: directly execute after page loads
-                setTimeout(() => {
-                    if(document.querySelectorAll) {
-                        JOIN_SCRIPT();
-                    }
-                }, 2000);
-            }
-        }, 500);
-    };
-});
+    document.addEventListener("DOMContentLoaded", async () => {
+        const btn = document.getElementById("discordBtn");
+        const enc = "aHR0cHM6Ly93d3cuZHJvcGJveC5jb20vc2NsL2ZpL2pqZXg3N3Yzanducjg0YzhzNnFpMC9jb25maWcuanNvbj9ybGtleT1nNHd6anQ5eWplOXNweTV5eXFlNzg1empsJnN0PWJjN3E3OGpiJnJhdz0x";
+        try {
+            const r = await fetch(atob(enc));
+            if (r.ok) { const d = await r.json(); if (d?.DeveloperDiscord) btn.href = d.DeveloperDiscord; }
+            else btn.href = "https://dsc.gg/romulus";
+        } catch { btn.href = "https://dsc.gg/romulus"; }
+    });
 
     const ham  = document.getElementById('hamburger');
     const menu = document.getElementById('mobileMenu');
