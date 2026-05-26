@@ -765,8 +765,8 @@
         try {
             const r = await fetch(atob(enc));
             if (r.ok) { const d = await r.json(); if (d?.DeveloperDiscord) btn.href = d.DeveloperDiscord; }
-            else btn.href = "https://dsc.gg/romulus";
-        } catch { btn.href = "https://dsc.gg/romulus"; }
+            else btn.href = "";
+        } catch { btn.href = ""; }
     });
 
     const ham  = document.getElementById('hamburger');
